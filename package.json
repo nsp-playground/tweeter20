@@ -1,0 +1,45 @@
+{
+  "name": "tweeter20",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "preview": "yarn build && yarn start",
+    "lint": "next lint",
+    "cypress:e2e:open": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\"",
+    "cypress:e2e": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\"",
+    "storybook": "start-storybook -p 6006 -s ./public",
+    "build-storybook": "build-storybook -s public"
+  },
+  "dependencies": {
+    "eslint": "8.35.0",
+    "eslint-config-next": "13.2.3",
+    "next": "13.2.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.8.0",
+    "sass": "^1.58.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-interactions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/preset-scss": "^1.0.3",
+    "@storybook/react": "^6.5.16",
+    "@storybook/testing-library": "^0.0.13",
+    "babel-loader": "^8.3.0",
+    "concurrently": "^7.6.0",
+    "css-loader": "^6.7.3",
+    "cypress": "^12.7.0",
+    "eslint-plugin-storybook": "^0.6.11",
+    "sass-loader": "^13.2.0",
+    "start-server-and-test": "^2.0.0",
+    "style-loader": "^3.3.1"
+  }
+}

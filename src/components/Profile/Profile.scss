@@ -1,0 +1,19 @@
+.Profile {
+  .username {
+    margin-bottom: 16px;
+    font-size: 36px;
+    color: gray;
+    font-weight: 800;
+  }
+  .status {
+    padding: 5px 10px;
+    border-radius: 50px;
+    color: white;
+    &.online {
+      background-color: green;
+    }
+    &.offline {
+      background-color: orangered;
+    }
+  }
+}
