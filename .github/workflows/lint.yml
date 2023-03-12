@@ -1,15 +1,12 @@
 name: Lint
 
 on:
-  # push:
-  #   branches:
-  #     - main
   pull_request:
     branches:
       - main
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
