@@ -10,10 +10,8 @@ jobs:
   bump-version-create-tag:
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout source code"
-        uses: "actions/checkout@v2"
-        with:
-          ref: ${{ github.ref }}
+      - name: Checkout source code
+        uses: actions/checkout@v3
 
       - name: "Bump version | Major"
         if: contains(github.event.pull_request.title, '[MAJOR]')
