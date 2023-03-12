@@ -30,10 +30,10 @@ jobs:
         if: contains(github.event.pull_request.title, '[MINOR]') == false && contains(github.event.pull_request.title, '[MAJOR]') == false
         run: npm version patch
 
-      - name: Create Release
-        run: gh release create ${{ github.ref }} --generate-notes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Create Release
+      #   run: gh release create ${{ github.ref }} --generate-notes
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push latest version
-        run: git push origin --follow-tags
+        run: git push origin main --follow-tags
