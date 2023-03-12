@@ -42,3 +42,5 @@ export default function Home() {
     </>
   );
 }
+
+// ex-1
