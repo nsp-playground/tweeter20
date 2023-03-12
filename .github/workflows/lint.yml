@@ -1,12 +1,12 @@
-name: e2e Tests
+name: Lint
 
 on:
-  push:
-    branches:
-      - main
-  # pull_request:
+  # push:
   #   branches:
   #     - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   test:
@@ -32,5 +32,5 @@ jobs:
             deps-node-modules-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Runs e2e tests
-        run: yarn run cypress:e2e
+      - name: Runs linter
+        run: yarn run lint
