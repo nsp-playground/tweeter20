@@ -10,11 +10,14 @@ jobs:
   bump-version-create-tag:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
+      - name: "Checkout source code"
+        uses: "actions/checkout@v2"
+        with:
+          ref: ${{ github.ref }}
 
       - name: "Bump version | Major"
         if: contains(github.event.pull_request.title, '[MAJOR]')
+        id: version-bump
         uses: "phips28/gh-action-bump-version@master"
         with:
           tag-prefix: "v"
@@ -25,6 +28,7 @@ jobs:
 
       - name: "Bump version | Minor"
         if: contains(github.event.pull_request.title, '[MINOR]')
+        id: version-bump
         uses: "phips28/gh-action-bump-version@master"
         with:
           tag-prefix: "v"
@@ -34,6 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Bump version | Patch"
+        id: version-bump
         if: contains(github.event.pull_request.title, '[MINOR]') == false && contains(github.event.pull_request.title, '[MAJOR]') == false
         uses: "phips28/gh-action-bump-version@master"
         with:
@@ -42,3 +47,8 @@ jobs:
           commit-message: "{{version}}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Output New Tag"
+        env:
+          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+        run: echo "new tag $NEW_TAG"
