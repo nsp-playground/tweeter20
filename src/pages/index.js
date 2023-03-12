@@ -42,5 +42,3 @@ export default function Home() {
     </>
   );
 }
-
-// ex-3
