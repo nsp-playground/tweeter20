@@ -13,27 +13,32 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Setup git
-        run: |
-          git config user.name 'Nazmuz Pranto'
-          git config user.email 'npranto4@gmail.com'
-
       - name: "Bump version | Major"
         if: contains(github.event.pull_request.title, '[MAJOR]')
-        run: npm version major
-
-      - name: "Bump version | Minor"
-        if: contains(github.event.pull_request.title, '[MINOR]')
-        run: npm version minor
-
-      - name: "Bump version | Patch"
-        if: contains(github.event.pull_request.title, '[MINOR]') == false && contains(github.event.pull_request.title, '[MAJOR]') == false
-        run: npm version patch
-
-      - name: Create Release
-        run: gh release create ${{ github.ref }} --generate-notes
+        uses: "phips28/gh-action-bump-version@master"
+        with:
+          tag-prefix: "v"
+          version-type: "major"
+          commit-message: "{{version}}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push latest version
-        run: git push origin main --follow-tags
+      - name: "Bump version | Minor"
+        if: contains(github.event.pull_request.title, '[MINOR]')
+        uses: "phips28/gh-action-bump-version@master"
+        with:
+          tag-prefix: "v"
+          version-type: "minor"
+          commit-message: "{{version}}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Bump version | Patch"
+        if: contains(github.event.pull_request.title, '[MINOR]') == false && contains(github.event.pull_request.title, '[MAJOR]') == false
+        uses: "phips28/gh-action-bump-version@master"
+        with:
+          tag-prefix: "v"
+          version-type: "patch"
+          commit-message: "{{version}}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
