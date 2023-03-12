@@ -1,7 +1,7 @@
 import Head from "next/head";
 import PostForm from "@/components/PostForm";
 import Post from "@/components/Post";
-import Profile from "@/components/Profile";
+// import Profile from "@/components/Profile";
 
 export default function Home() {
   return (
