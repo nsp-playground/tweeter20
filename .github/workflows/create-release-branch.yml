@@ -6,27 +6,33 @@ on:
       tagname:
         description: "Tag or branch name to create a new release branch from"
         required: true
-        default: "refs/tags/v1.0.0"
 
 jobs:
   create-branch:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Setup Node.js 16
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: 16.x
       - name: Input tag or branch name
         id: tagname
         run: |
-          echo "::set-output name=tagname::$(echo ${{ github.event.inputs.tagname }})"
+          echo "TAGNAME=${{ github.event.inputs.tagname }}" >> $GITHUB_ENV
       - name: Create branch from tag
         run: |
-          if [[ "${{ steps.tagname.outputs.tagname }}" == *"refs/tags/"* ]]; then
-            tag=$(echo "${{ steps.tagname.outputs.tagname }}" | sed 's/refs\/tags\///g')
+          if [[ "${{ env.TAGNAME }}" == *"refs/tags/"* ]]; then
+            tag=$(echo "${{ env.TAGNAME }}" | sed 's/refs\/tags\///g')
             branch="release/$tag"
             git checkout -b $branch
             git push -u origin $branch
-          elif [[ "${{ steps.tagname.outputs.tagname }}" == *"refs/heads/"* ]]; then
-            branch=$(echo "${{ steps.tagname.outputs.tagname }}" | sed 's/refs\/heads\///g')
+          elif [[ "${{ env.TAGNAME }}" == *"refs/heads/"* ]]; then
+            branch=$(echo "${{ env.TAGNAME }}" | sed 's/refs\/heads\///g')
             if [[ "$branch" != "master" ]]; then
               release_branch="release/$branch"
               git checkout -b $release_branch $branch
