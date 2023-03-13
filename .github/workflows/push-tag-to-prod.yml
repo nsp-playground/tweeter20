@@ -2,11 +2,10 @@ name: Push Tag to Prod
 
 on:
   workflow_dispatch:
-
-inputs:
-  tag:
-    description: "Tag to push to prod"
-    required: true
+    inputs:
+      tag:
+        description: "Tag to push to prod"
+        required: true
 
 jobs:
   push-to-prod:
@@ -14,7 +13,7 @@ jobs:
     steps:
       # Checkout the code
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Fetch all tags
       - name: Fetch all tags
