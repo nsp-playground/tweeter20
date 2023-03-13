@@ -1,0 +1,45 @@
+name: Push Tag to Prod
+
+on:
+  workflow_dispatch:
+
+inputs:
+  tag:
+    description: "Tag to push to prod"
+    required: true
+
+jobs:
+  push-to-prod:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Fetch all tags
+      - name: Fetch all tags
+        run: git fetch --tags
+
+      # Checkout the specified tag
+      - name: Checkout tag
+        run: git checkout tags/${{ inputs.tag }}
+
+      # Create and switch to 'prod' branch
+      - name: Create and switch to prod branch
+        run: |
+          git branch prod || true
+          git checkout prod
+
+      # Merge the changes from the tag into 'prod'
+      - name: Merge changes into prod branch
+        run: |
+          git merge --no-edit tags/${{ inputs.tag }}
+
+      # Push the changes to 'prod' branch
+      - name: Push changes to prod branch
+        uses: ad-m/github-push-action@v0.5.0
+        with:
+          branch: prod
+          force: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
