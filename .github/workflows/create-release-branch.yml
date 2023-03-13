@@ -14,16 +14,14 @@ jobs:
       run:
         shell: bash
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Setup Node.js 16
-        uses: actions/setup-node@v2.4.0
-        with:
-          node-version: 16.x
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
       - name: Input tag or branch name
         id: tagname
         run: |
           echo "TAGNAME=${{ github.event.inputs.tagname }}" >> $GITHUB_ENV
+
       - name: Create branch from tag
         run: |
           if [[ "${{ env.TAGNAME }}" == *"refs/tags/"* ]]; then
