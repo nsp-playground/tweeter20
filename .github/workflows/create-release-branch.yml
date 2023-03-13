@@ -1,25 +1,35 @@
 name: Create Release Branch
 
 on:
-  push:
-    tags:
-      - "*"
+  workflow_dispatch:
+    inputs:
+      tagname:
+        description: "Tag or branch name to create a new release branch from"
+        required: true
+        default: "refs/tags/v1.0.0"
 
 jobs:
   create-branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
-
-      - name: Setup git
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Input tag or branch name
+        id: tagname
         run: |
-          git config user.name 'Nazmuz Pranto'
-          git config user.email 'npranto4@gmail.com'
-
+          echo "::set-output name=tagname::$(echo ${{ github.event.inputs.tagname }})"
       - name: Create branch from tag
         run: |
-          tag=$(echo ${GITHUB_REF#refs/tags/})
-          branch="release/$tag"
-          git checkout -b $branch
-          git push -u origin $branch
+          if [[ "${{ steps.tagname.outputs.tagname }}" == *"refs/tags/"* ]]; then
+            tag=$(echo "${{ steps.tagname.outputs.tagname }}" | sed 's/refs\/tags\///g')
+            branch="release/$tag"
+            git checkout -b $branch
+            git push -u origin $branch
+          elif [[ "${{ steps.tagname.outputs.tagname }}" == *"refs/heads/"* ]]; then
+            branch=$(echo "${{ steps.tagname.outputs.tagname }}" | sed 's/refs\/heads\///g')
+            if [[ "$branch" != "master" ]]; then
+              release_branch="release/$branch"
+              git checkout -b $release_branch $branch
+              git push -u origin $release_branch
+            fi
+          fi
