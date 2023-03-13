@@ -40,5 +40,4 @@ jobs:
         with:
           branch: prod
           force: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          github_token: ${{ secrets.PAT }}
