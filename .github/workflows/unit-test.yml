@@ -1,4 +1,4 @@
-name: e2e Test
+name: Unit Test
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  e2e:
+  unit:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -29,5 +29,5 @@ jobs:
             deps-node-modules-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Runs e2e test
-        run: yarn run e2e
+      - name: Runs unit test
+        run: yarn run test
