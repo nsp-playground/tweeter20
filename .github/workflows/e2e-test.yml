@@ -30,4 +30,4 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Runs e2e test
-        run: yarn run cypress:e2e
+        run: yarn run e2e

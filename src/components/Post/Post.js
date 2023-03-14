@@ -9,13 +9,13 @@ export default function Post({ content, timeline }) {
       <div className="flex justify-space-between gap-16">
         <div className="post-actions flex gap-20">
           <div className="icon-block">
-            <AiOutlineHeart size="36px" />
+            <AiOutlineHeart size="36px" data-testid="heart-icon" />
             <span className="icon-count flex justify-content-center align-items-center">
               100
             </span>
           </div>
           <div className="icon-block">
-            <FiShare size="36px" />
+            <FiShare size="36px" data-testid="share-icon" />
           </div>
         </div>
         <span className="post-time">{timeline}</span>

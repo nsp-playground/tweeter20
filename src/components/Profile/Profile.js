@@ -1,6 +1,6 @@
 import React from "react";
 
-const Status = ({ status = "Offline" }) => {
+export const Status = ({ status = "Offline" }) => {
   return (
     <div className="status-container">
       <span className={`status ${status === "Offline" ? "offline" : "online"}`}>
