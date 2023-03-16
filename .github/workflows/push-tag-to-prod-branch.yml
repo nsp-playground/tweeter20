@@ -19,7 +19,8 @@ jobs:
           TAG_NAME=${{ inputs.tag_name }}
           RELEASE_BRANCH=prod
           git checkout main
-          git pull origin main
+          git pull
+          git clean -fd
           git checkout $RELEASE_BRANCH
           git reset --hard $TAG_NAME
           git push --force origin $RELEASE_BRANCH
