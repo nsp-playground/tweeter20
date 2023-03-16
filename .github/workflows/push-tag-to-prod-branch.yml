@@ -18,8 +18,9 @@ jobs:
         run: |
           TAG_NAME=${{ inputs.tag_name }}
           RELEASE_BRANCH=prod
-          git checkout $TAG_NAME
-          git checkout -b $RELEASE_BRANCH
+          git checkout main
+          git pull origin main
+          git checkout $RELEASE_BRANCH
           git reset --hard $TAG_NAME
           git push --force origin $RELEASE_BRANCH
 
