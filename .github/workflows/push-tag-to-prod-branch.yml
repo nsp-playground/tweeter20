@@ -18,10 +18,10 @@ jobs:
         run: |
           TAG_NAME=${{ inputs.tag_name }}
           RELEASE_BRANCH=prod
+          git checkout $TAG_NAME
           git checkout -b $RELEASE_BRANCH
-          git merge --strategy-option theirs $TAG_NAME
-          git commit -m "Merge tag $TAG_NAME into $RELEASE_BRANCH"
-          git push --set-upstream origin $RELEASE_BRANCH
+          git reset --hard $TAG_NAME
+          git push --force origin $RELEASE_BRANCH
 
       - name: Log tag pushed to prod
         run: |
