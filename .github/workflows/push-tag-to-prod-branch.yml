@@ -1,0 +1,29 @@
+name: Deploy Tag to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Tag?"
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Checkout tag on prod branch
+        run: |
+          TAG_NAME=${{ inputs.tag_name }}
+          RELEASE_BRANCH=prod
+          git checkout $RELEASE_BRANCH
+          git merge --strategy-option theirs $TAG_NAME
+          git commit -m "Merge tag $TAG_NAME into $RELEASE_BRANCH"
+          git push --set-upstream origin $RELEASE_BRANCH
+
+      - name: Log tag pushed to prod
+        run: |
+          RELEASE_BRANCH=prod
+          echo "Tag ($TAG_NAME) has been deployed to production!"
