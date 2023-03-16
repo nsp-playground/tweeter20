@@ -1,0 +1,27 @@
+name: Create Release Branch From Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Tag?"
+        required: true
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create release branch from tag
+        run: |
+          TAG_NAME=${{ inputs.tag_name }}
+          RELEASE_BRANCH=release/${TAG_NAME}
+          git checkout -b $RELEASE_BRANCH
+          git push --set-upstream origin $RELEASE_BRANCH
+
+      - name: Log release branch
+        run: |
+          RELEASE_BRANCH=release/${{ inputs.tag_name }}
+          echo "New release branch name: $RELEASE_BRANCH"
