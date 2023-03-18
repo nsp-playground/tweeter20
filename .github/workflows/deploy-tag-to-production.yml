@@ -21,8 +21,7 @@ jobs:
           git checkout main
           git pull --all
           git clean -fd
-          git checkout $RELEASE_BRANCH
-          git reset --hard $TAG_NAME
+          git checkout -b $RELEASE_BRANCH $TAG_NAME
           git push --force origin $RELEASE_BRANCH
 
       - name: Log tag pushed to prod
