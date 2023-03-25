@@ -19,10 +19,10 @@ jobs:
           TAG_NAME=${{ inputs.tag_name }}
           RELEASE_BRANCH=prod
           git checkout main
-          git pull --all
-          git clean -fd
+          git fetch --tags
           git push --delete origin $RELEASE_BRANCH || true
-          git checkout -b $RELEASE_BRANCH ${{ inputs.tag_name }}
+          git checkout $TAG_NAME
+          git checkout -b $RELEASE_BRANCH
           git push --set-upstream origin $RELEASE_BRANCH
 
       - name: Log tag pushed to prod
