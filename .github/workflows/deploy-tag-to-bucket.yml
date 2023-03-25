@@ -1,0 +1,31 @@
+name: Deploy Tag to Bucket
+
+on:
+  workflow_dispatch:
+    inputs:
+      bucket:
+        description: "Bucket to use for custom deploy?"
+        required: true
+        default: "bucket-1"
+        options: ["bucket-1", "bucket-2", "bucket-3", "bucket-4", "bucket-5"]
+      tag:
+        description: "Tag to deploy to bucket?"
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Checkout tag on bucket branch
+        run: |
+          TAG=${{ inputs.tag }}
+          BUCKET_BRANCH=production
+          git checkout main
+          git fetch --tags
+          git push --delete origin $BUCKET_BRANCH || true
+          git checkout $TAG
+          git checkout -b $BUCKET_BRANCH
+          git push --set-upstream origin $BUCKET_BRANCH
