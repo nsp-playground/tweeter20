@@ -20,19 +20,19 @@ jobs:
           TAG=${{ inputs.tag }}
           if git rev-parse --quiet --verify "refs/tags/$TAG" >/dev/null; then
             echo "Found tag $TAG"
-            echo "::set-output name=tag-exists::true"
+            echo "TAG_EXISTS=$(git rev-parse --quiet --verify \"refs/tags/$TAG\" >/dev/null && echo true || echo false)" >> $GITHUB_ENV
           else
             echo "Given tag $TAG does not exist"
-            echo "::set-output name=tag-exists::false"
+            echo "TAG_EXISTS=$(git rev-parse --quiet --verify \"refs/tags/$TAG\" >/dev/null && echo true || echo false)" >> $GITHUB_ENV
           fi
         continue-on-error: true
 
       - name: Set tag exists flag
         run: |
-          echo "Tag exists: ${{ steps.check-tag.outputs.tag-exists }}"
+          echo "TAG_EXISTS: ${{ env.TAG_EXISTS }}"
 
       - name: Checkout tag on production branch
-        if: ${{ steps.check-tag.outputs.tag-exists == 'true' }}
+        if: ${{ env.TAG_EXISTS == 'true' }}
         run: |
           TAG=${{ inputs.tag }}
           PRODUCTION_BRANCH=production
