@@ -3,8 +3,8 @@ name: Deploy Tag to Production
 on:
   workflow_dispatch:
     inputs:
-      tag_name:
-        description: "Tag?"
+      tag:
+        description: "Tag to release to production?"
         required: true
 
 jobs:
@@ -16,16 +16,15 @@ jobs:
 
       - name: Checkout tag on prod branch
         run: |
-          TAG_NAME=${{ inputs.tag_name }}
-          RELEASE_BRANCH=prod
+          TAG=${{ inputs.tag }}
+          PRODUCTION_BRANCH=production
           git checkout main
           git fetch --tags
-          git push --delete origin $RELEASE_BRANCH || true
-          git checkout $TAG_NAME
-          git checkout -b $RELEASE_BRANCH
-          git push --set-upstream origin $RELEASE_BRANCH
+          git push --delete origin $PRODUCTION_BRANCH || true
+          git checkout $TAG
+          git checkout -b $PRODUCTION_BRANCH
+          git push --set-upstream origin $PRODUCTION_BRANCH
 
-      - name: Log tag pushed to prod
+      - name: Log tag deployed to prod
         run: |
-          RELEASE_BRANCH=prod
-          echo "Tag ($TAG_NAME) has been deployed to production!"
+          echo "Tag ($TAG) has been successfully deployed to production!"
