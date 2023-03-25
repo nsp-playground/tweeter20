@@ -28,8 +28,9 @@ jobs:
         continue-on-error: true
 
       - name: Set tag exists flag
-        run: echo "Tag exists: ${{ steps.check-tag.outputs.tag-exists }}"
-        
+        run: |
+          echo "Tag exists: ${{ steps.check-tag.outputs.tag-exists }}"
+
       - name: Checkout tag on production branch
         if: ${{ steps.check-tag.outputs.tag-exists == 'true' }}
         run: |
