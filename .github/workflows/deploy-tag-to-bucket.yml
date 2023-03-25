@@ -7,7 +7,30 @@ on:
         description: "Bucket to use for custom deploy?"
         required: true
         default: "bucket-1"
-        options: ["bucket-1", "bucket-2", "bucket-3", "bucket-4", "bucket-5"]
+        options: |
+          [
+            {
+              "label": "Bucket 1",
+              "value": "bucket-1",
+              "selected": true
+            },
+            {
+              "label": "Bucket 2",
+              "value": "bucket-2"
+            },
+            {
+              "label": "Bucket 3",
+              "value": "bucket-3"
+            },
+            {
+              "label": "Bucket 4",
+              "value": "bucket-4"
+            },
+            {
+              "label": "Bucket 5",
+              "value": "bucket-5"
+            }
+          ]
       tag:
         description: "Tag to deploy to bucket?"
         required: true
@@ -22,7 +45,7 @@ jobs:
       - name: Checkout tag on bucket branch
         run: |
           TAG=${{ inputs.tag }}
-          BUCKET_BRANCH=production
+          BUCKET_BRANCH=${{ inputs.bucket }}
           git checkout main
           git fetch --tags
           git push --delete origin $BUCKET_BRANCH || true
