@@ -14,18 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Checkout tag on prod branch
+      - name: Checkout tag on production branch
         run: |
           TAG=${{ inputs.tag }}
           PRODUCTION_BRANCH=production
           git checkout main
-          git fetch --all
-          git clean -fd
+          git fetch --tags
           git push --delete origin $PRODUCTION_BRANCH || true
           git checkout $TAG
           git checkout -b $PRODUCTION_BRANCH
           git push --set-upstream origin $PRODUCTION_BRANCH
-
-      - name: Log tag deployed to prod
-        run: |
-          echo "Tag $TAG has been successfully deployed to production!"
