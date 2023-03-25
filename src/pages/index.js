@@ -13,7 +13,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1>Test: Deploy I</h1>
         <section className="section top">
           <Profile username="shakib" status="Offline" />
         </section>
