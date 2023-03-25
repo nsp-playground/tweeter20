@@ -1,0 +1,39 @@
+name: Deploy Branch to Bucket
+
+on:
+  workflow_dispatch:
+    inputs:
+      bucket:
+        description: "Bucket to use for custom deploy?"
+        required: true
+        type: choice
+        options:
+          - bucket-1
+          - bucket-2
+          - bucket-3
+          - bucket-4
+          - bucket-5
+      branch:
+        description: "Branch to deploy to bucket?"
+        required: true
+        default: "main"
+        type: choice
+        choices: ${{ toJson(github.event.repository.refs['heads']) }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Checkout branch on bucket branch
+        run: |
+          BRANCH=${{ inputs.branch }}
+          BUCKET_BRANCH=${{ inputs.bucket }}
+          git checkout main
+          git fetch --tags
+          git push --delete origin $BUCKET_BRANCH || true
+          git checkout $BRANCH
+          git checkout -b $BUCKET_BRANCH
+          git push --set-upstream origin $BUCKET_BRANCH
