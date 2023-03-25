@@ -25,11 +25,15 @@ jobs:
             echo "Given tag $TAG does not exist"
             echo "::set-output name=tag-exists::false"
           fi
-        outputs:
+        continue-on-error: true
+
+      - name: Set tag exists flag
+        env:
           tag-exists: ${{ steps.check-tag.outputs.tag-exists }}
+        run: echo "Tag exists: $tag-exists"
 
       - name: Checkout tag on production branch
-        if: steps.check-tag.outputs.tag-exists == 'true'
+        if: ${{ steps.check-tag.outputs.tag-exists == 'true' }}
         run: |
           TAG=${{ inputs.tag }}
           PRODUCTION_BRANCH=production
