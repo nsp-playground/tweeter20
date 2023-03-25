@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Checkout tag on production branch
+      - name: Checkout tag on prod branch
         run: |
           TAG=${{ inputs.tag }}
           PRODUCTION_BRANCH=production
@@ -24,3 +24,7 @@ jobs:
           git checkout $TAG
           git checkout -b $PRODUCTION_BRANCH
           git push --set-upstream origin $PRODUCTION_BRANCH
+
+      - name: Log tag deployed to prod
+        run: |
+          echo "Tag $TAG has been successfully deployed to production!"
