@@ -20,6 +20,8 @@ jobs:
           if ! git rev-parse --quiet --verify "refs/tags/$TAG" >/dev/null; then
             echo "Given tag $TAG does not exist"
             exit 1
+          else
+            echo "Found tag $TAG"
           fi
 
       - name: Checkout tag on production branch
