@@ -16,9 +16,6 @@ on:
       branch:
         description: "Branch to deploy to bucket?"
         required: true
-        default: "main"
-        type: choice
-        choices: ${{ toJson(github.event.repository.refs['heads']) }}
 
 jobs:
   deploy:
