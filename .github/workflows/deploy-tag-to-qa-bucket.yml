@@ -1,0 +1,34 @@
+name: Deploy Tag to QA Bucket
+
+on:
+  workflow_dispatch:
+    inputs:
+      qa_bucket:
+        description: "QA bucket to use for deployment?"
+        required: true
+        type: choice
+        options:
+          - qa-1
+          - qa-2
+          - qa-3
+      tag:
+        description: "Tag to deploy to QA bucket?"
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Checkout tag on QA bucket branch
+        run: |
+          TAG=${{ inputs.tag }}
+          QA_BUCKET_BRANCH=${{ inputs.qa_bucket }}
+          git checkout main
+          git fetch --tags
+          git push --delete origin $QA_BUCKET_BRANCH || true
+          git checkout $TAG
+          git checkout -b $QA_BUCKET_BRANCH
+          git push --set-upstream origin $QA_BUCKET_BRANCH
