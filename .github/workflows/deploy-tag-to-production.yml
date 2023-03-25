@@ -28,10 +28,8 @@ jobs:
         continue-on-error: true
 
       - name: Set tag exists flag
-        env:
-          tag-exists: ${{ steps.check-tag.outputs.tag-exists }}
-        run: echo "Tag exists: $tag-exists"
-
+        run: echo "Tag exists: ${{ steps.check-tag.outputs.tag-exists }}"
+        
       - name: Checkout tag on production branch
         if: ${{ steps.check-tag.outputs.tag-exists == 'true' }}
         run: |
@@ -46,4 +44,5 @@ jobs:
 
       - name: Log tag pushed to production
         run: |
+          TAG=${{ inputs.tag }}
           echo "Tag $TAG has been deployed to production!"
