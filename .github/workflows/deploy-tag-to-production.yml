@@ -4,28 +4,20 @@ on:
   workflow_dispatch:
     inputs:
       tag_name:
-        description: "Tag?"
+        description: "Tag to release?"
         required: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Checkout tag on prod branch
-        run: |
-          TAG_NAME=${{ inputs.tag_name }}
-          RELEASE_BRANCH=prod
-          git checkout main
-          git pull --all
-          git clean -fd
-          git checkout $RELEASE_BRANCH
-          git reset --hard $TAG_NAME
-          git push --force origin $RELEASE_BRANCH
+      - name: Delete remote prod branch
+        run: git push --delete origin prod || true
 
-      - name: Log tag pushed to prod
+      - name: Create prod branch
         run: |
-          RELEASE_BRANCH=prod
-          echo "Tag ($TAG_NAME) has been deployed to production!"
+          git checkout -b prod ${{ inputs.tag_name }}
+          git push --set-upstream origin prod
