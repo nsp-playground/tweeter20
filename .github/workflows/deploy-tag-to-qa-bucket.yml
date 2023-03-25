@@ -27,7 +27,8 @@ jobs:
           TAG=${{ inputs.tag }}
           QA_BUCKET_BRANCH=${{ inputs.qa_bucket }}
           git checkout main
-          git fetch --tags
+          git fetch --all
+          git clean -fd
           git push --delete origin $QA_BUCKET_BRANCH || true
           git checkout $TAG
           git checkout -b $QA_BUCKET_BRANCH
