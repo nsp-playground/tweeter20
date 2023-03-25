@@ -14,25 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Check if tag exists
-        id: check-tag
-        run: |
-          TAG=${{ inputs.tag }}
-          if git rev-parse --quiet --verify "refs/tags/$TAG" >/dev/null; then
-            echo "Found tag $TAG"
-            echo "TAG_EXISTS=$(git rev-parse --quiet --verify \"refs/tags/$TAG\" >/dev/null && echo true || echo false)" >> $GITHUB_ENV
-          else
-            echo "Given tag $TAG does not exist"
-            echo "TAG_EXISTS=$(git rev-parse --quiet --verify \"refs/tags/$TAG\" >/dev/null && echo true || echo false)" >> $GITHUB_ENV
-          fi
-        continue-on-error: true
-
-      - name: Set tag exists flag
-        run: |
-          echo "TAG_EXISTS: ${{ env.TAG_EXISTS }}"
-
       - name: Checkout tag on production branch
-        if: ${{ env.TAG_EXISTS == 'true' }}
         run: |
           TAG=${{ inputs.tag }}
           PRODUCTION_BRANCH=production
@@ -42,8 +24,3 @@ jobs:
           git checkout $TAG
           git checkout -b $PRODUCTION_BRANCH
           git push --set-upstream origin $PRODUCTION_BRANCH
-
-      - name: Log tag pushed to production
-        run: |
-          TAG=${{ inputs.tag }}
-          echo "Tag $TAG has been deployed to production!"
