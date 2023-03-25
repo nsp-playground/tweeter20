@@ -14,6 +14,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Check if tag exists
+        run: |
+          TAG=${{ inputs.tag }}
+          if ! git rev-parse --quiet --verify "refs/tags/$TAG" >/dev/null; then
+            echo "Given tag $TAG does not exist"
+            exit 1
+          fi
+
       - name: Checkout tag on production branch
         run: |
           TAG=${{ inputs.tag }}
