@@ -33,5 +33,7 @@ jobs:
         run: yarn run lint
       - name: Runs unit test
         run: yarn run test
-      - name: Runs e2e test
-        run: yarn run e2e
+      # TODO: Temporarily disabled since env variables need to be
+      # setup inside Github Actions runner first
+      # - name: Runs e2e test
+      #   run: yarn run e2e
