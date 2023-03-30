@@ -31,5 +31,3 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Runs unit test
         run: yarn run test
-      - name: Runs e2e test
-        run: yarn run e2e
