@@ -2,6 +2,7 @@ import Head from "next/head";
 import PostForm from "@/components/PostForm";
 import Post from "@/components/Post";
 import Profile from "@/components/Profile";
+import { SignedOut } from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -13,6 +14,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        <section className="flex justify-end">
+          <SignedOut>
+            <a href="/dashboard">Login</a>
+          </SignedOut>
+        </section>
         <section className="section top">
           <Profile username="shakib" status="Offline" />
         </section>
