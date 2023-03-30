@@ -3,6 +3,7 @@ import PostForm from "@/components/PostForm";
 import Post from "@/components/Post";
 import Profile from "@/components/Profile";
 import { SignedOut } from "@clerk/nextjs";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -16,7 +17,7 @@ export default function Home() {
       <main>
         <section className="flex justify-end">
           <SignedOut>
-            <a href="/dashboard">Login</a>
+            <Link href="/dashboard">Login</Link>
           </SignedOut>
         </section>
         <section className="section top">
