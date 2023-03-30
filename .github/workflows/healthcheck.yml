@@ -1,0 +1,39 @@
+name: Healthcheck (Lint + Unit Test + e2e Test)
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16]
+    steps:
+      - name: "Checkout source code"
+        uses: actions/checkout@v3
+      - name: "Setup Node.js | Node Version: ${{ matrix.node-version }}"
+        continue-on-error: true
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: https://registry.npmjs.org/
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/yarn
+          key: deps-node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            deps-node-modules-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Runs linter
+        run: yarn run lint
+      - name: Runs unit test
+        run: yarn run test
+      # TODO: Temporarily disabled since env variables need to be
+      # setup inside Github Actions runner first
+      # - name: Runs e2e test
+      #   run: yarn run e2e
