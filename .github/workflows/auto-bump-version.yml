@@ -14,44 +14,20 @@ jobs:
 
       - name: Setup git
         run: |
-          git config user.name 'Nazmuz Pranto'
+          git config user.name 'nsp-playground'
           git config user.email 'npranto4@gmail.com'
 
-      # - name: "Bump version | Major"
-      #   if: contains(github.event.pull_request.title, '[MAJOR]')
-      #   run: npm version major
-      - name: "Automated Version Bump | Major"
+      - name: "Bump version | Major"
         if: contains(github.event.pull_request.title, '[MAJOR]')
-        uses: "phips28/gh-action-bump-version@master"
-        with:
-          tag-prefix: "v"
-          version-type: "major"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm version major
 
-      # - name: "Bump version | Minor"
-      #   if: contains(github.event.pull_request.title, '[MINOR]')
-      #   run: npm version minor
-      - name: "Automated Version Bump | Minor"
+      - name: "Bump version | Minor"
         if: contains(github.event.pull_request.title, '[MINOR]')
-        uses: "phips28/gh-action-bump-version@master"
-        with:
-          tag-prefix: "v"
-          version-type: "minor"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm version minor
 
-      # - name: "Bump version | Patch"
-      #   if: contains(github.event.pull_request.title, '[MINOR]') == false && contains(github.event.pull_request.title, '[MAJOR]') == false
-      #   run: npm version patch
-      - name: "Automated Version Bump | Patch"
+      - name: "Bump version | Patch"
         if: contains(github.event.pull_request.title, '[MINOR]') == false && contains(github.event.pull_request.title, '[MAJOR]') == false
-        uses: "phips28/gh-action-bump-version@master"
-        with:
-          tag-prefix: "v"
-          version-type: "patch"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm version patch
 
-      # - name: Push latest version
-      #   run: git push origin main --follow-tags
+      - name: Push latest version
+        run: git push origin main --follow-tags
