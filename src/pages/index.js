@@ -10,7 +10,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1>Welcome to Tweeter 20</h1>
+        <h1 className="text-3xl font-bold underline text-red-500">
+          Welcome to Tweeter 20
+        </h1>
       </main>
     </>
   );
