@@ -14,7 +14,8 @@
     "build-storybook": "build-storybook -s public",
     "test:watch": "jest --watch",
     "test": "jest --passWithNoTests",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "healthcheck": "yarn lint && yarn test && yarn e2e"
   },
   "dependencies": {
     "eslint": "8.35.0",
