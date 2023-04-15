@@ -14,10 +14,10 @@
     "build-storybook": "build-storybook -s public",
     "test:watch": "jest --watch",
     "test": "jest --passWithNoTests",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "healthcheck": "yarn lint && yarn test && yarn e2e"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.13.0",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "next": "13.2.3",
