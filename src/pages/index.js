@@ -1,10 +1,13 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
 import { BsFillBookmarkCheckFill } from "react-icons/bs";
 import cardsClipart from "../assets/images/cards-clipart.png";
 
-export default function Home() {
+export default function GetStartedPage() {
+  const { isSignedIn } = useAuth();
+
   return (
     <>
       <Head>
@@ -13,7 +16,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="Home get-started px-6 h-full w-full rounded-xl">
+      <main className="GetStartedPage px-6 h-full w-full rounded-xl">
         <section className="card cliparts">
           <div className="mx-auto py-10">
             <Image
@@ -21,6 +24,7 @@ export default function Home() {
               alt="Cards Clipart"
               className="mx-auto"
               width={350}
+              priority
             />
           </div>
 
@@ -33,7 +37,7 @@ export default function Home() {
             members, and share their experiences with others
           </p>
 
-          <Link href={"/create-your-account"}>
+          <Link href={isSignedIn ? "/dashboard" : "/create-your-account"}>
             <button
               type="button"
               className="w-full rounded-md py-3 px-2 font-medium uppercase bg-white flex items-center justify-center"
