@@ -1,8 +1,11 @@
 import Head from "next/head";
 import React from "react";
-import { SignedIn, UserButton } from "@clerk/nextjs";
+import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 
 export default function DashboardPage() {
+  const { user } = useUser();
+  console.log({ user });
+
   return (
     <>
       <Head>
