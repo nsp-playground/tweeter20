@@ -17,7 +17,7 @@ export default function CreateYourAccountPage() {
             path="/create-your-account"
             routing="path"
             signInUrl="/sign-in"
-            redirectUrl="/dashboard"
+            redirectUrl="/new-user-greeting"
           />
         </section>
       </main>
