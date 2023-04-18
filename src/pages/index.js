@@ -40,8 +40,7 @@ export default function GetStartedPage() {
           <Link href={isSignedIn ? "/dashboard" : "/create-your-account"}>
             <button
               type="button"
-              className="w-full rounded-md py-3 px-2 font-medium uppercase bg-white flex items-center justify-center"
-              style={{ color: "#1e85ff" }}
+              className="w-full rounded-md py-3 px-2 font-medium uppercase flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white"
             >
               <BsFillBookmarkCheckFill size={"1rem"} className="mr-2" />{" "}
               <span>Get Started</span>
