@@ -5,58 +5,10 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState, useCallback } from "react";
 import { SignedIn, useUser } from "@clerk/nextjs";
 import uniqid from "uniqid";
+import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
+import CheckIcon from "@/components/CheckIcon/CheckIcon";
+import verifyIsNewUser from "@/utils/verifyIsNewUsers";
 import tweeterLogo from "./../../assets/images/tweeter20-logo.png";
-
-const LoadingIcon = () => {
-  return (
-    <div className="flex justify-center items-center">
-      <svg
-        className="animate-spin h-4 w-4 text-gray-400"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-        ></path>
-      </svg>
-    </div>
-  );
-};
-
-const CheckIcon = () => {
-  return (
-    <div className="flex items-center justify-center">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-4 w-4 text-green-500"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fillRule="evenodd"
-          d="M18.293 3.293a1 1 0 0 1 1.414 1.414l-11 11a1 1 0 0 1-1.414 0l-5-5a1 1 0 0 1 1.414-1.414l4.293 4.293 10-10z"
-          clipRule="evenodd"
-        />
-      </svg>
-    </div>
-  );
-};
-
-function isWithin10Seconds(datetime1, datetime2) {
-  const diff = Math.abs(datetime1.getTime() - datetime2.getTime());
-  return diff <= 10000; // 10000 milliseconds = 10 seconds
-}
 
 const LOADING_STATUS = [
   {
@@ -66,6 +18,7 @@ const LOADING_STATUS = [
   { Icon: <LoadingIcon />, status: "Almost there..." },
   { Icon: <LoadingIcon />, status: "So close, I promise..." },
 ];
+
 const READY_STATUS = {
   Icon: <CheckIcon />,
   status: "Ready!",
@@ -74,27 +27,24 @@ const READY_STATUS = {
 export default function NewUserGreeting(props) {
   const router = useRouter();
   const { user } = useUser();
+  console.log({ user });
+
   const [loadingStatusIndex, setLoadingStatusIndex] = useState(0);
   const [isNewUserCreated, setIsNewUserCreated] = useState(false);
   const [isLoadingStatusDisplayed, setIsLoadingStatusDisplayed] =
     useState(false);
 
   useEffect(() => {
-    if (!user || !isWithin10Seconds(new Date(), new Date(user.createdAt))) {
-      router.push("/dashboard");
-    }
-  }, [user, router]);
-
-  useEffect(() => {
+    if (!user) return;
     const timer = setInterval(() => {
       if (loadingStatusIndex < LOADING_STATUS.length - 1) {
         setLoadingStatusIndex((ps) => ps + 1);
       } else {
         setIsLoadingStatusDisplayed(true);
       }
-    }, 1000);
+    }, 2000);
     return () => clearInterval(timer);
-  }, [loadingStatusIndex]);
+  }, [loadingStatusIndex, user]);
 
   const createNewUser = useCallback(async () => {
     try {
@@ -106,7 +56,8 @@ export default function NewUserGreeting(props) {
   }, []);
 
   useEffect(() => {
-    if (user && isWithin10Seconds(new Date(), new Date(user.createdAt))) {
+    if (!user) return;
+    if (user || verifyIsNewUser(user)) {
       console.log({ user });
       const newUser = {
         firstName: user?.firstName,
@@ -127,6 +78,11 @@ export default function NewUserGreeting(props) {
     ? READY_STATUS
     : LOADING_STATUS[loadingStatusIndex];
 
+  if (!verifyIsNewUser(user)) {
+    router.push("/dashboard");
+    return null;
+  }
+
   return (
     <>
       <Head>
@@ -145,7 +101,7 @@ export default function NewUserGreeting(props) {
               className="mb-4 rounded-lg"
               width={150}
             />
-            <h1 className="text-4xl font-extrabold mb-4 text-gray-700">
+            <h1 className="text-4xl font-extrabold mb-4 text-white">
               Hey, {user.firstName}!
             </h1>
 
@@ -156,11 +112,11 @@ export default function NewUserGreeting(props) {
 
             <Link
               href="/dashboard"
-              className={
+              className={`block w-full text-center py-2 px-4 rounded-md font-normal ${
                 isProfileReady
-                  ? "block w-full text-center py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-normal"
-                  : "block w-full text-center py-2 px-4 bg-gray-400 text-gray-200 rounded-md font-normal disabled:opacity-50 cursor-not-allowed"
-              }
+                  ? "bg-blue-600 hover:bg-blue-700 text-white"
+                  : "bg-gray-400 text-gray-300 disabled:opacity-50 cursor-not-allowed"
+              }`}
               disabled={!isProfileReady}
             >
               Go to dashboard
