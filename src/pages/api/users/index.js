@@ -1,4 +1,4 @@
-import createUserHandler from "@/handlers/createUserHandler";
+import { createUserHandler } from "@/handlers/createUserHandler";
 
 export default async function usersHandler(req, res) {
   const { method, body } = req;
@@ -7,7 +7,7 @@ export default async function usersHandler(req, res) {
 
   switch (method) {
     case "POST": {
-      // handle GET requests to /api/users
+      // handle POST requests to "/api/users"
       createUserHandler(req, res);
       break;
     }
